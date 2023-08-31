@@ -1,0 +1,473 @@
+************* HTML PART *********************
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA_Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="surveystyle.css">
+  <script src="surveyscript.js" defer></script>
+  <title>Survey</title>
+</head>
+
+<body>
+  <form action="#" class="form">
+    <h3 class="text-center"> SURVEY FORM</h3>
+
+    <!-- progress -->
+    <div class="progressbar">
+      <div class="progress" id="progress"></div><!-- takes us from one line to next line -->
+
+      <div class="progress-step progress-step-active" data-title="Email"></div>
+      <div class="progress-step" data-title="Info"></div>
+      <div class="progress-step" data-title="Other Info"></div>
+      
+    </div>
+    <!-- Steps-->
+    <!-- Step 1-->
+    <div class="form-step form-step-active">
+      <div class="input-group">
+        <label for="Email"> Email</label>
+        <input type="text" name="Email" id="Email" />
+      </div>
+      <div class="">
+        <a href="#" class="btn btn-next width-50 ml-auto ">Next</a> <!-- ml-auto to style it on rhs -->
+      </div>
+    </div>
+    <!-- Step 2-->
+    <div class="form-step ">
+      <div class="input-group">
+        <label for="username"> FirstName</label>
+        <input type="text" name="username" id="username" />
+      </div>
+      <div class="input-group">
+        <label for="usename"> LastName</label>
+        <input type="text" name="usename" id="usename" />
+      </div>
+      <div class="input-group">
+        <label for="gender"> Gender</label>
+        <input type="text" name="gender" id="gender" />
+      </div>
+      <div class="input-group">
+        <label for="age"> Age(years)</label>
+        <input type="number" name="age" id="age" />
+      </div>
+      <div class="input-group">
+        <label for="Category"> Category</label>
+        <input type="text" name="Category" id="Category" />
+      </div>
+      <div class="input-group">
+        <label for="address">Address </label>
+        <input type="text" name="address" id="address" />
+      </div>
+      <div class="input-group">
+        <label for="City"> City</label>
+        <input type="text" name="City" id="City" />
+      </div>
+      <div class="input-group">
+        <label for="phone"> phone</label>
+        <input type="text" name="phone" id="phone" />
+      </div>
+
+      <div class="input-group">
+        <label for="Dob"> Date of Birth</label>
+        <input type="date" name="Dob" id="Dob" />
+      </div>
+      <div class="input-group">
+        <label for="ID">national ID</label>
+        <input type="number" name="ID" id="ID" />
+
+      </div>
+      <div class="btns-group">
+        <a href="#" class="btn btn-prev  ">Previous</a>
+        <a href="#" class="btn btn-next  ">Next</a>
+      </div>
+    </div>
+    <!-- Step 3-->
+    <div class="form-step ">
+      <div class="input-group">
+        <label for="passwaord"> passwaord</label>
+        <input type="password" name="passwaord" id="passwaord" />
+      </div>
+      <div class="input-group">
+        <label for="address"> address</label>
+        <input type="text" name="address" id="address" />
+      </div>
+      <div class="btns-group">
+        <a href="#" class="btn btn-prev  ">Previous</a>
+        <input type="submit" value="submit" class="btn" />
+      </div>
+    </div>
+    <div class="form-step ">
+    <div class="center">
+      <h1 id="captchaHeading">
+          Captcha
+      </h1>
+      <div id="captchaBackground">
+          <canvas id="captcha">captcha text</canvas>
+          <input id="textBox" type="text" name="text">
+          <div id="buttons">
+              <input id="submitButton" type="submit">
+              <button id="refreshButton" type="submit">Refresh</button>
+          </div>
+          <span id="output"></span>
+      </div>
+  </div>
+  </div>
+
+  </form>
+</body>
+</html>
+
+
+**************  CSS PART   *************
+
+:root {
+    --primary-color: #0e42eecc;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Montserrat, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+}
+
+/*Global Stylings*/
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+
+}
+
+input {
+    display: block;
+    width: 100%;
+    height: 50%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border: radius 0.25rem;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/*progress bar*/
+.progressbar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    counter-reset: step;
+    margin: 2rem 0 4rem;
+}
+
+.progressbar::before,
+.progress {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 100%;
+    background-color: #dcdcdc;
+    z-index: -1;
+}
+
+.progress {
+    background-color: var(--primary-color);
+    width: 0%;
+    transition: .3s;
+}
+
+.progress-step {
+    width: 2.1875rem;
+    height: 2.1875rem;
+    background-color: #e6e4e4;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.progress-step::before {
+    counter-increment: step;
+    /*for adding number to steps */
+    content: counter(step);
+}
+
+.progress-step::after {
+    content: attr(data-title);
+    /*attribute*/
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    font-size: 0.85rem;
+    color: #0e0d0d;
+}
+
+.progress-step-active {
+    background-color: var(--primary-color);
+    color: #f9f9fa;
+}
+
+
+
+/*form*/
+.form {
+    width: clanp(320px, 30%, 430px);
+    margin: 0auto;
+    border: 1px solid #ccc;
+    border: radius 0.35rem;
+    padding: 1.5rem;
+}
+
+.form-step {
+    display: none;
+    transform-origin:top;
+    animation: animate .5%;
+
+}
+
+.form-step-active {
+    display: block;
+}
+
+.input-group {
+    margin: 2rem 0;
+    /* for space btw username and password*/
+}
+#keyframes animate {
+    from{
+        transform: scale(1, 0 );
+        opacity: 0;
+    }
+    to{
+        transform: scale(1,1);
+        opacity: 1;
+    }
+}
+
+/*button*/
+.btns-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    /*for space btw buttons*/
+}
+
+.btn {
+    padding: 0.75rem;
+    display: block;
+    text-decoration: none;
+    background-color: var(--primary-color);
+    color: #fdfcfc;
+    text-align: center;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.btn:hover {
+    box-shadow: 0 0 0 2px #f6f6f8, 0 0 0 3px var(--primary-color);
+    /* to put glow effect on the button */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    background-color: #f3f3f8;
+    font-family: 'Roboto', sans-serif;
+}
+
+#captchaBackground {
+    height: 220px;
+    width: 250px;
+    background-color: #ebedf0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#captchaHeading {
+    color: rgb(8, 8, 8);
+}
+
+#captcha {
+    height: 80%;
+    width: 80%;
+    font-size: 30px;
+    letter-spacing: 3px;
+    margin: auto;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#submitButton {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    background-color: #0e42eecc;
+    border: 0px;
+    font-weight: bold;
+}
+
+#refreshButton {
+    background-color: #0e42eecc;
+    border: 0px;
+    font-weight: bold;
+}
+
+#textBox {
+    height: 25px;
+}
+
+.incorrectCaptcha {
+    color: #FF0000;
+}
+
+.correctCaptcha {
+    color: #0b3103;
+}
+
+************* JS PART ********************
+
+const prevBtns = document.querySelectorAll(".btn-prev");
+const nextBtns = document.querySelectorAll(".btn-next");
+const progress = document.getElementById("progress");
+const formSteps = document.querySelectAll(".form-step");
+const progressSteps = document.querySelectAll(".progress-step");
+
+
+let formStepsNum = 0;// to keep track 
+nextBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        formStepsNum++;
+        updateFormSteps();
+        updateProgressbar();
+
+    });
+});
+prevBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        formStepsNum--;
+        updateFormSteps();
+        updateProgressbar();
+
+    });
+});
+
+function updateFormSteps() {
+    formSteps.forEach((formStep) => {
+        formStep.classList.contains("form-step-active") && 
+        formStep.classList.remove("form-step-active");
+
+    })
+    formSteps[formStepsNum].classList.add("form-step-active");
+}
+
+function updateProgressbar(){
+  progressSteps.forEach((progressStep, idx) => {
+    if( idx < formStepsNum+1){
+progressStep.classList.add("progress-step-active");
+    } else{
+        progressStep.classList.remove("progress-step-active");
+    } 
+
+  });
+  const progressActive= document.querySelectAll(".progress-step-active");
+  progress.style.width=((progressActive.length-1)/(progressSteps.length-1))* 100 + '%'; 
+}
+
+
+// CAPTCHA
+// document.querySelector() is used to select an element from the document using its ID
+
+let captchaText = document.querySelector('#captcha');
+var ctx = captchaText.getContext("2d");
+ctx.font = "30px Roboto";
+ctx.fillStyle = "#08e5ff";
+
+
+let userText = document.querySelector('#textBox');
+let submitButton = document.querySelector('#submitButton');
+let output = document.querySelector('#output');
+let refreshButton = document.querySelector('#refreshButton');
+
+
+// alphaNums contains the characters with which you want to create the CAPTCHA
+let alphaNums = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+let emptyArr = [];
+
+
+for (let i = 1; i <= 7; i++) {
+    emptyArr.push(alphaNums[Math.floor(Math.random() * alphaNums.length)]);
+}
+var c = emptyArr.join('');
+ctx.fillText(emptyArr.join(''),captchaText.width/4, captchaText.height/2);
+
+
+userText.addEventListener('keyup', function(e) {
+    
+    if (e.keyCode === 13) {
+        if (userText.value === c) {
+            output.classList.add("correctCaptcha");
+            output.innerHTML = "Correct!";
+        } else {
+            output.classList.add("incorrectCaptcha");
+            output.innerHTML = "Incorrect, please try again";
+        }
+    }
+});
+
+// This event listener is stimulated whenever the user clicks the "Submit" button
+submitButton.addEventListener('click', function() {
+    if (userText.value === c) {
+        output.classList.add("correctCaptcha");
+        output.innerHTML = "Correct!";
+    } else {
+        output.classList.add("incorrectCaptcha");
+        output.innerHTML = "Incorrect, please try again";
+    }
+});
+
+
+// A new random CAPTCHA is generation
+refreshButton.addEventListener('click', function() {
+    userText.value = "";
+    let refreshArr = [];
+    for (let j = 1; j <= 7; j++) {
+        refreshArr.push(alphaNums[Math.floor(Math.random() * alphaNums.length)]);
+    }
+    ctx.clearRect(0, 0, captchaText.width, captchaText.height);
+    c = refreshArr.join('');
+    ctx.fillText(refreshArr.join(''),captchaText.width/4, captchaText.height/2);
+    output.innerHTML = "";
+});
